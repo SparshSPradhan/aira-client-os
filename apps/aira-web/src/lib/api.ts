@@ -1,10 +1,14 @@
 import { initApiClient, getApiClient, TOKEN_KEY, authStore } from '@repo/core';
 import type { TokenStorage, User } from '@repo/core';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 const baseURL =
   process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
-if (!baseURL) {
+// In development, allow empty baseURL to enable local UI development without backend
+// In production, require the API base URL
+if (!baseURL && !isDev) {
   throw new Error(
     'NEXT_PUBLIC_API_BASE_URL environment variable is required. ' +
       'Please set it in your .env.local or .env file.',
@@ -88,6 +92,12 @@ export async function hydrateAuthState(): Promise<boolean> {
 // Verify auth by making an API call and return user data
 // Browser sends HttpOnly cookie automatically with withCredentials: true
 export async function verifyAuthState(): Promise<User | null> {
+  // Skip verification in development mode if no API base URL is configured
+  if (isDev && !baseURL) {
+    console.log('[Auth] Skipping verification in development mode (no API base URL)');
+    return null;
+  }
+
   console.log('[Auth] Verifying auth state via API...');
   try {
     const client = getApiClient();

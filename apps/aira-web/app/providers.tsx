@@ -1,5 +1,7 @@
 'use client';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 import { useEffect } from 'react';
 import { QueryClientProvider, queryClient } from '@repo/core';
 import { verifyAuthState } from '@/lib/api';
@@ -14,8 +16,11 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   // Verify auth state on mount by calling /users/me API
   // This works with HttpOnly cookies since browser sends them automatically
+  // Skip in development mode to avoid API calls when backend is not available
   useEffect(() => {
-    verifyAuthState();
+    if (!isDev) {
+      verifyAuthState();
+    }
   }, []);
 
   return (

@@ -85,7 +85,7 @@ export const ROUTES = {
   VERIFY: '/verify',
   NAME: '/name',
   // App
-  HUB: '/',
+  HUB: '/hub',
   WORKSPACE: '/workspace',
   RULES_NEW: '/rules/new',
   RULES_EDIT: (id: string) => `/rules/${id}`,

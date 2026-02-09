@@ -1,5 +1,7 @@
 'use client';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -19,6 +21,13 @@ function AuthCallbackContent() {
   useEffect(() => {
     if (hasProcessed.current) return;
     hasProcessed.current = true;
+
+       //---------------------------------------          Skip OAuth verification in local dev
+  if (isDev) {
+    router.replace(ROUTES.HUB);
+    return;
+  }
+
 
     const error = searchParams.get('error');
 
