@@ -91,7 +91,7 @@ export class ApiClient {
       res => {
         // Log response headers and data in dev mode
         if (this.isDevMode()) {
-          console.warn(`✅ API Response: ${res.config.url}`, res);
+          console.warn(`API Response: ${res.config.url}`, res);
         }
         return res;
       },

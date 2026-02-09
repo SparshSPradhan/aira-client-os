@@ -1,3 +1,6 @@
+const isDev = process.env.NODE_ENV === 'development'; // In development, we assume authenticated to allow local UI work
+
+
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -20,8 +23,12 @@ interface AuthActions {
 const useAuthStore = create<AuthState & AuthActions>()(
   persist(
     immer(set => ({
-      isAuthenticated: false,
-      isLoading: true,
+      // isAuthenticated: false,
+      // isLoading: true,
+
+      isAuthenticated: isDev ? true : false,  // In development, we can default to authenticated for easier testing. In production, start as not authenticated.
+isLoading: false,
+
       setAuthenticated: isAuthenticated =>
         set(state => {
           state.isAuthenticated = isAuthenticated;

@@ -39,9 +39,22 @@ This is a Turborepo monorepo with the following structure:
 # Install dependencies
 pnpm install
 
+# Optional: Configure environment variables for local development
+# Copy .env.example to .env.local in apps/aira-web/ (if you want to test with backend)
+# For local UI development without backend, you can skip this step
+# Authentication is automatically skipped in development mode
 
 # Start the web app in development
 pnpm dev --filter=aira-web
+```
+
+### Local Development Notes
+
+- **Authentication**: In development mode (`NODE_ENV=development`), authentication checks are automatically skipped, allowing you to develop the UI without a backend running.
+- **Environment Variables**: 
+  - `NEXT_PUBLIC_API_BASE_URL` - Optional in dev mode, required in production
+  - `NEXT_PUBLIC_GOOGLE_AUTH_URL` - Optional in dev mode, required for OAuth in production
+- The app will work locally without these variables set, but API calls will be skipped.
 
 
 ## The Assignment
