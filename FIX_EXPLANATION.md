@@ -595,25 +595,7 @@ The GitHub repo provided UI components but no working page to render them. Witho
 
 ---
 
-## Interview-Ready Explanation
 
-### Elevator Pitch (30 seconds)
-> "The app had authentication checks that ran unconditionally on startup, making API calls even in local development. This caused failures when developers didn't have a backend configured. I fixed it by adding environment-aware guards that skip authentication verification in development mode, allowing the UI to work independently while maintaining security in production."
-
-### Detailed Explanation (2-3 minutes)
-> "The issue was a mismatch between development and production authentication requirements. The app had three places where auth logic ran unconditionally:
-> 
-> 1. **Module-level validation**: When `api.ts` was imported, it checked for the API base URL and threw an error if missing. This blocked app startup entirely.
-> 
-> 2. **Startup verification**: The `Providers` component called `verifyAuthState()` on mount, which made an HTTP request to `/v1/users/me`. This happened even in dev mode without a backend.
-> 
-> 3. **No dev mode guards**: `verifyAuthState()` didn't check if it should run - it always tried the API call, which would fail and set `isAuthenticated: false`, overriding the dev default.
-> 
-> The codebase had partial dev mode support - `AuthGuard` skipped checks in dev, but the underlying auth state was still being set to `false` by failed API calls. This created inconsistent state.
-> 
-> I implemented a three-layer defense: made `baseURL` optional in dev mode at the module level, added a guard in `Providers` to skip `verifyAuthState()` entirely in development, and added a defensive check inside `verifyAuthState()` itself. This ensures that in development, authentication state stays at its initialized value, matching the behavior of `AuthGuard`, while production maintains full security."
-
----
 
 ## Conclusion
 
